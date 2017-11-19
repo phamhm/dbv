@@ -12,6 +12,7 @@ function fileLines(state = [], action){
 function selectLine(state = {}, action){
   switch(action.type){
   case TYPES.SELECT_LINE:
+
     const line = action.payload;
     const lineb64 = btoa(line);
     return {line, lineb64};
@@ -20,4 +21,17 @@ function selectLine(state = {}, action){
   }
 }
 
-export default {fileLines, selectLine};
+function comments(state = [], action){
+  switch(action.type){
+  case TYPES.GET_COMMENTS:
+    return action.payload.data? [...action.payload.data.comments] : [];
+  case TYPES.CREATE_COMMENT:
+    return action.payload.data? [...action.payload.data._doc.comments]:[];
+  case TYPES.DELETE_COMMENT:
+    return action.payload.data? [...action.payload.data._doc.comments]:[];
+  default:
+    return state;
+  }
+}
+
+export default {fileLines, selectLine, comments};

@@ -3,10 +3,15 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 const bodyParser = require( 'body-parser');
+mongoose.connect('localhost/dbv');
+const CommentSchema = new Schema({
+  submit_date: {type: Date, default: Date.now},
+  comment: String
+});
 
 const DbvSchema = new Schema({
   _id: String,
-  comments: [String]
+  comments: [CommentSchema]
 });
 
 const Dbv = mongoose.model('dbv', DbvSchema);
@@ -29,8 +34,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-mongoose.connect('mongodb://localhost/dbv');
-
 router.get('/', (req, res) => {
   res.json({message:"Hello there, go fuck yourself"});
 });
@@ -38,14 +41,35 @@ router.get('/', (req, res) => {
 router.route('/comments/:id')
   .get((req, res) => {
 
-    Dbv.findById(req.params.id, (err, dbv) => {
+    Dbv.findById(req.params.id, (err, comments) => {
       if (err) res.send(err);
-      res.json(dbv.comments);
+      res.json(comments);
     });
   })
-  .post()
-  .put()
-  .delete();
+  .post((req, res) => {
+    // this seems dupious
+    const pushComment = {$push: {"comments": {comment:req.body.comment}}};
+    Dbv.findByIdAndUpdate(req.params.id,
+                          pushComment,
+                          {upsert: true, new: true},
+                          (err, comments) => {
+                            if(err) res.send(err);
+                            res.json({...comments});
+                          }
+                         );
+  });
+
+router.route('/comments/:id/:commentId')
+  .delete((req, res) => {
+    const pullComment = {$pull: {"comments": {_id:req.params.commentId}}};
+    Dbv.findByIdAndUpdate(req.params.id,
+                          pullComment,
+                          {new: true},
+                          (err, comments) => {
+                            if (err) res.send(err);
+                            res.json({...comments});
+                          });
+  });
 
 //Use our router configuration when we call /api
 app.use('/dbvapi', router);

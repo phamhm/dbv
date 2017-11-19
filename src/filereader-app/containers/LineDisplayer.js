@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {selectLine} from '../actions';
+import {selectLine, getComments} from '../actions';
 
 class LineDisplayer extends Component{
   handleClick(){
-    return this.props.selectLine(this.props.line);
+    const base64 = btoa(this.props.line);
+    this.props.getComments(base64);
+    this.props.selectLine(this.props.line);
   }
 
   render(){
@@ -14,4 +16,4 @@ class LineDisplayer extends Component{
   }
 }
 
-export default connect(null, {selectLine})(LineDisplayer);
+export default connect(null, {selectLine, getComments})(LineDisplayer);

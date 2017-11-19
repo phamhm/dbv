@@ -4,6 +4,10 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {createPost} from '../actions';
 
+
+//TODO: form is not being blanked out.
+
+//TODO: validation is not being called.
 class CommentForm extends Component {
   renderFields(field){
     const {meta:{touched = null, error=null}} = field;
@@ -29,11 +33,11 @@ class CommentForm extends Component {
     return (
       <div>
         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-          <Field name="Comment"
+          <Field name="comment"
                  label="Comment"
                  component={this.renderFields}/>
           <button type="submit"
-                  className="btn btn-primary">Submit</button>
+                  className="btn btn-primary">Add</button>
         </form>
       </div>
     );
