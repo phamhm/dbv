@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require( 'express');
 const mongoose = require('mongoose');
 const bodyParser = require( 'body-parser');
@@ -25,7 +23,7 @@ app.use(function(req, res, next) {
 mongoose.connect('mongodb://localhost/dbv');
 
 router.get('/', (req, res) => {
-  res.json({message:"Hello there"});
+  res.json({message:"Hello there, go fuck yourself"});
 });
 
 //Use our router configuration when we call /api

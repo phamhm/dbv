@@ -17,8 +17,7 @@ class Dbv extends Component {
 
     fileReader.onload = (event) => {
       const res = event.target.result;
-      const lines = res.split(/[\n]+/g)
-            .filter((line) => line);
+      const lines = res.split(/[\n]+/g);
       readFileLine(lines);
     };
   }
