@@ -1,6 +1,15 @@
 const express = require( 'express');
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+const Schema = mongoose.Schema;
 const bodyParser = require( 'body-parser');
+
+const DbvSchema = new Schema({
+  _id: String,
+  comments: [String]
+});
+
+const Dbv = mongoose.model('dbv', DbvSchema);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,8 +35,20 @@ router.get('/', (req, res) => {
   res.json({message:"Hello there, go fuck yourself"});
 });
 
+router.route('/comments/:id')
+  .get((req, res) => {
+
+    Dbv.findById(req.params.id, (err, dbv) => {
+      if (err) res.send(err);
+      res.json(dbv.comments);
+    });
+  })
+  .post()
+  .put()
+  .delete();
+
 //Use our router configuration when we call /api
-app.use('/api', router);
+app.use('/dbvapi', router);
 
 app.listen(port, function() {
   console.log(`api running on port ${port}`);
