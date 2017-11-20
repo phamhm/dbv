@@ -16,16 +16,15 @@ class CommentForm extends Component {
 
     return (
       <div className={className}>
-        <label>{field.label}</label>
         <textarea className="form-control"
-               {...field.input}/>
+                  {...field.input}/>
         <div className="text-help">{touched? error:null}</div>
       </div>
     );
   }
 
   onSubmit(values){
-    this.props.createPost(values, this.props.id);
+    this.props.createPost(values, this.props.id).then(() => this.props.reset());
   }
 
   render() {
@@ -41,7 +40,6 @@ class CommentForm extends Component {
         </form>
       </div>
     );
-
   }
 }
 
@@ -49,8 +47,8 @@ const connectedCommentForm = connect(null, {createPost})(CommentForm);
 
 function validate(values){
   const errors = {};
-  if (!values.Comment)
-    errors.title="Comment can't be blank";
+  if (!values.comment)
+    errors.comment="Comment can't be blank";
 
   return errors;
 }

@@ -49,8 +49,7 @@ export function deleteComment(id, commentId){
 
 export function updateComment(id, commentId, values){
   const URL = `${ROOT_URL}/${id}/${commentId}`;
-  const request = axios.put(URL, values );
-
+  const request = axios.put(URL, values);
   return {
     type: TYPES.UPDATE_COMMENT,
     payload: request

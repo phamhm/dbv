@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {deleteComment, updateComment} from '../actions';
+import {deleteComment} from '../actions';
+import CommentUpdater from './CommentUpdater';
 
 class CommentDetail extends Component{
-  unhideEditArea(){
-
-  }
-
   render(){
     const {comment, _id: commentId, submit_date} = this.props.comment;
     return (
@@ -18,18 +15,15 @@ class CommentDetail extends Component{
             <span aria-hidden="true">×</span>
           </button>
 
-          <button type="button"
-                  onClick={this.unhideEditArea.bind(this)}
-            className="btn btn-default">
-            <span aria-hidden="true">U</span>
-          </button>
-
           on: {submit_date}
           <p>{comment}</p>
+          <CommentUpdater
+            comment={this.props.comment}
+            id={this.props.id}/>
         </div>
       </div>
     );
   }
 }
 
-export default connect(null, {deleteComment, updateComment})(CommentDetail);
+export default connect(null, {deleteComment})(CommentDetail);

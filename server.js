@@ -4,6 +4,7 @@ mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 const bodyParser = require( 'body-parser');
 mongoose.connect('localhost/dbv');
+
 const CommentSchema = new Schema({
   submit_date: {type: Date, default: Date.now},
   comment: String
@@ -69,6 +70,19 @@ router.route('/comments/:id/:commentId')
                             if (err) res.send(err);
                             res.json({...comments});
                           });
+  })
+  .put((req, res) => {
+    const newComment = req.body.comment;
+
+    const ids = {"_id": req.params.id,
+                 "comments._id":req.params.commentId};
+
+    const setComment = {$set:{"comments.$.comment":newComment}};
+    Dbv.findOneAndUpdate(ids, setComment, {new:true},
+                         (err, comments) => {
+                           if (err) res.send(err);
+                           res.json({...comments});});
+
   });
 
 //Use our router configuration when we call /api
