@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 
-class CommentBox extends Component {
-  render() {
-    return (
-      <div>
-        <h2>{this.props.selectLine.line}</h2>
-        <CommentForm id={btoa(this.props.selectLine.line)}/>
-        <CommentList id={btoa(this.props.selectLine.line)}/>
-      </div>
-    );
-  }
+function CommentBox({selectLine:{line}}) {
+  const b64= btoa(line);
+
+  return (
+    <div>
+      <h2>{line}</h2>
+      <CommentForm id={b64}/>
+      <CommentList id={b64}/>
+    </div>
+  );
 }
 
 function mapStateToProps({selectLine}){

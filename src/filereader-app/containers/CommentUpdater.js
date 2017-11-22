@@ -12,6 +12,7 @@ class CommentUpdater extends Component{
 
   onUpdateChange(event){
     this.setState({commentText:event.target.value});
+
   }
 
   componentWillReceiveProps({comment:{comment:nextComment}}){
@@ -28,8 +29,11 @@ class CommentUpdater extends Component{
     const id = this.props.id;
 
     const newComment = this.state.commentText;
-    if (newComment !== comment)
+    if (newComment !== comment){
       this.props.updateComment(id, commentId, {comment:newComment});
+      this.props.toggler();
+    }
+
   }
 
   render(){
